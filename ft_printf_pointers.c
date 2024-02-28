@@ -6,22 +6,40 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:42:29 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/23 15:35:47 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 17:55:51 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "LIBFT/libft.h"
 
-int	ft_printf_pointers(unsigned	long address)
+static	int	ft_printf_address(unsigned long n, char *base, int count)
 {
-	char	*str;
+	if (n < (unsigned long)ft_strlen(base))
+	{
+		if (ft_putnchar_fd(base[n % ft_strlen(base)], 1, 1) == -1)
+			return (-1);
+	}
+	else
+	{
+		if (ft_printf_address(n / ft_strlen(base), base, count) == -1)
+			return (-1);
+		if (ft_putnchar_fd(base[n % ft_strlen(base)], 1, 1) == -1)
+			return (-1);
+	}
+	return (count);
+}
+
+int	ft_printf_pointers(unsigned long address)
+{
 	int		count;
 
 	count = 0;
-	str = ft_longtobase(address, HEXALOW);
-	count = ft_strlen(str) + 2;
-	ft_putstr_fd("0x", 1);
-	ft_putstr_fd(str, 1);
-	free(str);
-	return (count);
+	if (ft_putnstr_fd("0x", 1, 2) == -1)
+		return (-1);
+	count = ft_printf_address(address, HEXALOW,
+			ft_printf_number_length_address(address));
+	if (count == -1)
+		return (-1);
+	return (count + 2);
 }

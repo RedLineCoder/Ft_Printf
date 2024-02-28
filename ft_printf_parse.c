@@ -6,48 +6,45 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:45:03 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/25 22:40:07 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 19:31:48 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "LIBFT/libft.h"
 
-static	t_log	ft_printf_log_init(void)
+static	void	ft_printf_log_init(t_log *log)
 {
-	t_log	log;
-
-	log.minus = 0;
-	log.type = 0;
-	log.plus = 0;
-	log.precision = 0;
-	log.dot = 0;
-	log.sharp = 0;
-	log.space = 0;
-	log.width = 0;
-	log.zero = 0;
-	return (log);
+	log->minus = 0;
+	log->type = 0;
+	log->plus = 0;
+	log->precision = 0;
+	log->dot = 0;
+	log->sharp = 0;
+	log->space = 0;
+	log->width = 0;
+	log->zero = 0;
 }
 
-static	t_log	ft_printf_parse_flags(t_log	log, char	*start)
+static	void	ft_printf_parse_flags(t_log *log, char *start)
 {
 	while (*start != '.' && !ft_strchr(TYPE, *start) && *start)
 	{
 		if (*start == '+')
-			log.plus = 1;
+			log->plus = 1;
 		if (*start == '-')
-			log.minus = 1;
+			log->minus = 1;
 		if (*start == '#')
-			log.sharp = 1;
+			log->sharp = 1;
 		if (*start == '0' && !ft_isdigit(*(start - 1)))
-			log.zero = 1;
+			log->zero = 1;
 		if (*start == ' ')
-			log.space = 1;
+			log->space = 1;
 		start++;
 	}
-	return (log);
 }
 
-static	t_log	ft_printf_parse_width(t_log	log, char	*start, va_list	args)
+static	void	ft_printf_parse_width(t_log *log, char	*start, va_list	*args)
 {
 	size_t	length;
 
@@ -57,10 +54,10 @@ static	t_log	ft_printf_parse_width(t_log	log, char	*start, va_list	args)
 		if ((ft_isdigit(*start) && *start > '0') || *start == '*')
 		{
 			if (*start == '*')
-				log.width = va_arg(args, int);
+				log->width = va_arg(*args, int);
 			else
 			{
-				log.width = ft_atoi(start);
+				log->width = ft_atoi(start);
 				while (ft_isdigit(*start))
 					start++;
 			}
@@ -68,10 +65,9 @@ static	t_log	ft_printf_parse_width(t_log	log, char	*start, va_list	args)
 		else
 			start++;
 	}
-	return (log);
 }
 
-static	t_log	ft_printf_parse_precision(t_log log, char *start, va_list args)
+static	void	ft_printf_parse_prec(t_log *log, char *start, va_list *args)
 {
 	size_t	length;
 
@@ -81,10 +77,10 @@ static	t_log	ft_printf_parse_precision(t_log log, char *start, va_list args)
 		if ((ft_isdigit(*start) && *start > '0') || *start == '*')
 		{
 			if (*start == '*')
-				log.precision = va_arg(args, int);
+				log->precision = va_arg(*args, int);
 			else
 			{
-				log.precision = ft_atoi(start);
+				log->precision = ft_atoi(start);
 				while (ft_isdigit(*start))
 					start++;
 			}
@@ -92,24 +88,24 @@ static	t_log	ft_printf_parse_precision(t_log log, char *start, va_list args)
 		else
 			start++;
 	}
-	return (log);
 }
 
-int	ft_printf_parse(char *start, va_list args)
+int	ft_printf_parse(char *start, va_list *args)
 {
 	t_log	log;
 
-	log = ft_printf_parse_flags(ft_printf_log_init(), start);
-	log = ft_printf_parse_width(log, start, args);
+	ft_printf_log_init(&log);
+	ft_printf_parse_flags(&log, start);
+	ft_printf_parse_width(&log, start, args);
 	while (*start != '.' && !ft_strchr(TYPE, *start) && *start)
 		start++;
 	if (*start == '.')
 	{
 		log.dot = 1;
-		log = ft_printf_parse_precision(log, start, args);
+		ft_printf_parse_prec(&log, start, args);
 	}
 	while (!ft_strchr(TYPE, *start) && *start)
 		start++;
 	log.type = *start;
-	return (ft_printf_print_type_bonus(log, args));
+	return (ft_printf_print_type(&log, args));
 }

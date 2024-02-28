@@ -6,49 +6,69 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:42:24 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/22 20:03:26 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 19:19:35 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "LIBFT/libft.h"
+
+static	int	ft_printf_hex(unsigned int n, char *base)
+{
+	if (n < (unsigned int)ft_strlen(base))
+	{
+		if (ft_putnchar_fd(base[n % ft_strlen(base)], 1, 1) == -1)
+			return (-1);
+	}
+	else
+	{
+		if (ft_printf_hex(n / ft_strlen(base), base) == -1)
+			return (-1);
+		if (ft_putnchar_fd(base[n % ft_strlen(base)], 1, 1) == -1)
+			return (-1);
+	}
+	return (0);
+}
 
 int	ft_printf_number(int number)
 {
-	char	*str;
-	int		count;
+	int	len;
 
-	count = 0;
-	str = ft_itoa(number);
-	count = ft_strlen(str);
-	ft_putstr_fd(str, 1);
-	free(str);
-	return (count);
+	len = ft_printf_number_length(number);
+	if (number < 0)
+		len++;
+	if (number == -2147483648)
+	{
+		if (ft_putnstr_fd("-2147483648", 1, 11) == -1)
+			return (-1);
+		return (11);
+	}
+	if (ft_printf_putnbr(number) == -1)
+		return (-1);
+	return (len);
 }
 
-int	ft_printf_base(unsigned int number, char type)
+int	ft_printf_base(t_log *log, unsigned int number)
 {
-	char	*str;
-	int		count;
-
-	count = 0;
-	if (type == 'x' || type == 'X')
+	if (log->dot && log->precision == 0 && number == 0)
+		return (0);
+	if (log->type == 'x' || log->type == 'X')
 	{
-		if (type == 'x')
-			str = ft_itobase(number, HEXALOW);
+		if (log->type == 'x')
+		{
+			if (ft_printf_hex(number, HEXALOW) != -1)
+				return (ft_printf_number_length_hex(log, number));
+		}
 		else
-			str = ft_itobase(number, HEXAUP);
-		count = ft_strlen(str);
-		ft_putstr_fd(str, 1);
-		free(str);
-		return (count);
+		{
+			if (ft_printf_hex(number, HEXAUP) != -1)
+				return (ft_printf_number_length_hex(log, number));
+		}
 	}
-	if (type == 'u')
+	else
 	{
-		str = ft_itobase(number, DECIMAL);
-		count = ft_strlen(str);
-		ft_putstr_fd(str, 1);
-		free(str);
-		return (count);
+		if (ft_printf_hex(number, DECIMAL) != -1)
+			return (ft_printf_number_length_hex(log, number));
 	}
-	return (0);
+	return (-1);
 }

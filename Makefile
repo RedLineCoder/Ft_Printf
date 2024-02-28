@@ -2,8 +2,12 @@ LIBFT = ./LIBFT/libft.a
 
 NAME = libftprintf.a
 
-SRCS =  ft_printf.c ft_printf_utils.c ft_itobase.c ft_longtobase.c ft_printf_pointers.c ft_printf_chars_bonus.c ft_printf_chars.c ft_printf_numbers.c
-SRCSB = ft_printf_bonus.c ft_printf_utils_bonus.c ft_itobase.c ft_longtobase.c ft_printf_pointers_bonus.c ft_printf_chars_bonus.c ft_printf_numbers_bonus.c ft_printf_parse.c
+SRCS =  ft_printf.c ft_printf_parse.c ft_printf_chars.c ft_printf_char_utils.c \
+		ft_printf_pointers.c  ft_printf_numbers.c ft_printf_number_utils.c \
+
+SRCSB = ft_printf_bonus.c ft_printf_parse.c ft_printf_chars.c ft_printf_char_utils.c \
+		ft_printf_pointers.c  ft_printf_numbers.c ft_printf_number_utils.c ft_printf_flag_utils.c \
+		ft_printf_chars_bonus.c ft_printf_pointers_bonus.c ft_printf_numbers_bonus.c \
 
 CC = gcc
 

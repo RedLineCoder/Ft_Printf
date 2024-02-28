@@ -6,26 +6,22 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:42:21 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/25 15:29:32 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 17:54:47 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "LIBFT/libft.h"
 
 int	ft_printf_char(char chr)
 {
-	ft_putchar_fd(chr, 1);
-	return (1);
+	return (ft_putnchar_fd(chr, 1, 1));
 }
 
 int	ft_printf_chars(char *str)
 {
-	int	count;
-
-	count = 0;
-	if (!str)
-		count += ft_putnstr_fd("(null)", 1, 6);
+	if (str == NULL)
+		return (ft_putnstr_fd("(null)", 1, 6));
 	else
-		count += ft_putnstr_fd(str, 1, ft_strlen(str));
-	return (count);
+		return (ft_putnstr_fd(str, 1, ft_strlen(str)));
 }
