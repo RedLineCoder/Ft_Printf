@@ -6,7 +6,7 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 13:56:04 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/28 19:37:38 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 20:31:51 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@
 /* 
 The structure of a variable given to printf function
 %[parameter][flags][width][.precision][length]type
-*/
-
-/*
-First we will track log for structure in order to format input value
 */
 
 typedef struct s_log
