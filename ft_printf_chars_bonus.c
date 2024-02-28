@@ -6,11 +6,11 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:50:13 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/28 19:18:37 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 22:19:40 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 int	ft_printf_char_bonus(t_log *log, char chr)
 {

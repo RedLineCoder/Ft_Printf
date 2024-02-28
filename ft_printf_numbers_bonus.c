@@ -6,11 +6,11 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:50:29 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/28 19:19:25 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 22:27:09 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 static	int	ft_printf_print_number(t_log *log, int number, int len)
 {
@@ -27,6 +27,48 @@ static	int	ft_printf_print_number(t_log *log, int number, int len)
 	if (ft_printf_putnbr(number) == -1)
 		return (-1);
 	return (len);
+}
+
+static	int	ft_printf_hex(unsigned int n, char *base)
+{
+	if (n < (unsigned int)ft_strlen_recursive(base))
+	{
+		if (ft_putnchar_fd(base[n % ft_strlen_recursive(base)], 1, 1) == -1)
+			return (-1);
+	}
+	else
+	{
+		if (ft_printf_hex(n / ft_strlen_recursive(base), base) == -1)
+			return (-1);
+		if (ft_putnchar_fd(base[n % ft_strlen_recursive(base)], 1, 1) == -1)
+			return (-1);
+	}
+	return (0);
+}
+
+static	int	ft_printf_base(t_log *log, unsigned int number)
+{
+	if (log->dot && log->precision == 0 && number == 0)
+		return (0);
+	if (log->type == 'x' || log->type == 'X')
+	{
+		if (log->type == 'x')
+		{
+			if (ft_printf_hex(number, HEXALOW) != -1)
+				return (ft_printf_number_length_hex(log, number));
+		}
+		else
+		{
+			if (ft_printf_hex(number, HEXAUP) != -1)
+				return (ft_printf_number_length_hex(log, number));
+		}
+	}
+	else
+	{
+		if (ft_printf_hex(number, DECIMAL) != -1)
+			return (ft_printf_number_length_hex(log, number));
+	}
+	return (-1);
 }
 
 int	ft_printf_number_bonus(t_log *log, int number)

@@ -6,7 +6,7 @@
 /*   By: moztop <moztop@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:42:24 by moztop            #+#    #+#             */
-/*   Updated: 2024/02/28 19:19:35 by moztop           ###   ########.fr       */
+/*   Updated: 2024/02/28 22:36:24 by moztop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ int	ft_printf_number(int number)
 
 int	ft_printf_base(t_log *log, unsigned int number)
 {
-	if (log->dot && log->precision == 0 && number == 0)
-		return (0);
 	if (log->type == 'x' || log->type == 'X')
 	{
 		if (log->type == 'x')
